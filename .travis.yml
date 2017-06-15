@@ -1,0 +1,23 @@
+
+language: bash
+
+services:
+  - docker
+
+script:
+  - docker build consul-template -t $REPO:$IMAGE_TAG
+
+env:
+  global:
+  - secure: "AHIrb6BvJI2ozQ9hEcBYy7NZwHwcsEgn3gMDypuao16+3QX5YK09aG6/KFTrL1654Bngb20NINXpiCANpcbzZxWarDVkRoZdgxV8dplgfSANNlYkd/rPoP8nTG6+S6bB1auCZDyFnhWfoSZNjkFswnlzZXCTCMkX3+SmE4U0M8ywaJBPZdXTJUq/FTCf4Trv1uXoZylTbzWiUcDf7aRtbYn07frYn8H3VXFvvJWOdlIRDd895hi1W2+KpjMq0th8XhlzZGDNsNXl+CPFSYSFGZcTuxqZaG8JYyOyjgiOWn/0MmN63Wv9AqTI4foslMzzw60RW3YYayRbXRDoASJXvO86+0fUpQY+yzUT2Im7f6rnnTzVxhbjoR0v79zz4Sy0KeiPk4/mH7Y7fdRoNyk/5q/jCCg+r+2jlYYKC/zuO8UQrByjErCIcR2nI/Rxrafw8cDa6Uz8rl094PkVxKY/By8dm2bPUVIPac+W4FWLqc3tA4F5GrYB9JZkMsoqkPjANbTHjH9FtIaGHMA1oC99f4FKUb8pOAb1v51AoQagrvEzD40fTdYAkrOf31UCChUUnwfV6LcbvrGIPI880RLr7nj32qkWOKhVD9PQD2s6pzIxb1VXt3MKMu7yHc6Lajg7n15jiIaTexsASGa1myO9e7RVGhmNo0boqDRpYuPx0ow="
+  - secure: "cixSNcIhhzGp9K3FV+PdX8dHSfumyhEiLD1Db6rx1Tmck/NkSxyRmoJh8ZoeTbuLcmpGCwpAlY4K4CiHYOVu0zSbAHeIi7rxuJHoLui6Qg2FarXvrP1I/zyBcAxjC41o2uHJMFr7EfnkisX3IjY6TNSl7vE0qRGd74e1C6vnBqbnT7l0ziqFg0HWgyT7YjgoRhmne71CSrgiaxRKqGYvS6T7JM1QvIFQCLkFithezflC5vGq+2T8H7FslJyWSLgHYk7fPN54in3lU1e84/5u9HWF30Drnfml60rWUXBX03hWJl8mYGsaHolqbAqS4YbAKLAlSmziyJc2TQvonRV2GhTYrdhv+qDcZOLuucaD8swvPGUVo2DeEa+oKc7tVQJ0YyRe7FwmuPzZSe9gyWfcDxSgJDIWe72EJ/d4ldOgbjQvXgF1fDv25mC8+CUS2dZ1Qwup24TcBSpOscUaWHrwlUKIgXQFzSNv4gdmRCtR9cTld/nj2795kvi9KEP/6QVWsk8HG6cd6vtW0Y2XLLURYYClRQno00X7IY16W1sAiNOHqIl+NdinZawUNbHxSJ9uUoOpmZ4ZrnzTxyNWxZwHizbHxwoUCGTu67c9fpACvWoUU73iaS/409+MY98ifjkXxsTl7l5d75Q96hOSxr15LJpFAtejCtEWd+rOARsqT7o="
+  - secure: "a3MpqRfJHuPLEffJo7BXkRRCYJY7wEOmlcU8qk7V/NhKJCaRlDrD8VG6LQKoFdzuK5tvCu+2849+OLsCkidC3meYYY1Q4AFVkhEEFbgn6ahm8h/hRIAZyMje6anrGjRYlyCYTATN+C4inU1x+HU5CG0XbTl1noa2pUiWUcPZJtzWzjnc8jRoddX1XmuKOa8+QKzI0ARhZoUYoMUuR4s9i7Hw+EWcFPPcMiEqa0FVyHKor+7cJKPe17uznJOdFyzv53r2mHFZR/rtcXwSpfGVGmA+U0VxQtjHSekQ/gGS+rQb0gT/IE7/CSQnNaRIRWSF0hM01wGi42mztzKITvPyElm7oe45+LaBhZY+w0HCPyvEUcEi5sSt7Vm47Cw2hseNzLFnRXaVeqyQKDe/7lptWPnUHhB1IuOL8w3CuvGgWdHDQZu00ak0l/63++Czc+SX9Om4EIm1crzosxjr6Pn9ePdkP1Mcu+SrBXmepXxgHf5zihGVsqVm8KpbbpZz+upcDRI+Ki03w3w5T+j8x/nCIptI73P4TxfAqFtqrU2slhneIZFfFK+Wu1ilRhBreIGFew31ST+aYZiIBpdMCg1pDP2Ydn5WnpDkLLh1wjx5WOsvX738xtHifs8uypPa++xZ5yd5vQ2rxG3V+M7NOEWt+HIRnahMyANUXsn7eWgOXRE="
+  - REPO=verizon/nelson-consul-template
+  - IMAGE_TAG=1.0.$TRAVIS_BUILD_NUMBER
+
+after_success:
+  - |
+    if [ $TRAVIS_PULL_REQUEST = 'false' ]; then
+      docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS && \
+      docker push $REPO:$IMAGE_TAG
+    fi
