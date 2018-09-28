@@ -8,7 +8,7 @@ build:
 	mkdir -p $(IMAGE_SRC)/.build/ && \
 	cp $(PWD)/common/entrypoint.sh $(IMAGE_SRC)/.build/entrypoint.sh && \
 	cp $(IMAGE_SRC)/* $(IMAGE_SRC)/.build/ && \
-	docker build --squash -t $(IMAGE) $(IMAGE_SRC)/.build/
+	docker build -t $(IMAGE) $(IMAGE_SRC)/.build/
 
 test: build
 	docker run --rm -it -v `pwd`:/templates $(IMAGE)\
