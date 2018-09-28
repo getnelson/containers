@@ -1,27 +1,16 @@
-## ----------------------------------------------------------------------------
-## Copyright (C) 2017 Verizon.  All Rights Reserved.
-##
-##   Licensed under the Apache License, Version 2.0 (the "License");
-##   you may not use this file except in compliance with the License.
-##   You may obtain a copy of the License at
-##
-##       http://www.apache.org/licenses/LICENSE-2.0
-##
-##   Unless required by applicable law or agreed to in writing, software
-##   distributed under the License is distributed on an "AS IS" BASIS,
-##   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-##   See the License for the specific language governing permissions and
-##   limitations under the License.
-##
-## ----------------------------------------------------------------------------
 FROM alpine:3.8
 
 ENV GOMPLATE_VERSION 2.7.0
 
-ADD https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64 /
+COPY render.sh /usr/local/bin/render
+COPY entrypoint.sh /usr/local/bin/entrypoint
 
+ADD https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-amd64 /
 RUN mv /gomplate_linux-amd64 /usr/local/bin/gomplate && \
     chmod +x /usr/local/bin/gomplate && \
-    apk add --update ca-certificates
+    chmod +x /usr/local/bin/entrypoint && \
+    chmod +x /usr/local/bin/render && \
+    apk add --update ca-certificates && \
+    apk add bash
 
-ENTRYPOINT ["/usr/local/bin/gomplate"]
+ENTRYPOINT ["/usr/local/bin/entrypoint"]
