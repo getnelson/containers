@@ -1,6 +1,6 @@
 FROM alpine:3.8
 
-ENV GOMPLATE_VERSION 3.0.0
+ENV GOMPLATE_VERSION 3.3.1
 
 COPY render.sh /usr/local/bin/render
 COPY entrypoint.sh /usr/local/bin/entrypoint
